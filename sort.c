@@ -61,6 +61,7 @@ void	sort_final(t_listc **stack_a, t_mmm	minmaxmed)
 void	sort_five(t_listc **a, t_listc **b, t_mmm m)
 {
 	get_index(a, m);
+	*b = NULL;
 	while (ft_lstc_size(*a) != 3)
 	{
 		if ((*a)->value == 1 || (*a)->value == 5)
