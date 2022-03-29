@@ -2,34 +2,45 @@
 # https://www.gnu.org/software/make/manual/html_node/index.html
 NAME = push_swap
 
-SRC = main.c #draw.c init_data.c key_and_mouse_controls.c
+SRC += main.c
+SRC += ft_lstc_add.c ft_lstc_del_one.c
+SRC += ft_lstc_clear.c ft_lstc_size.c
+SRC += ft_lstc_new.c ft_lstc_pop.c
+SRC += ft_quick_sort.c ft_malloc.c
+SRC += init_stack.c
+SRC += operations_push.c operations_swap.c
+SRC += operations_rotate.c operations_rev_rotate.c
+SRC += score.c sort.c
 
+SRCDIR = ./
 OBJDIR = ./obj/
-OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
-D_FILES = $(addprefix $(OBJDIR),$(SRC:.c=.d))
+OBJ = $(addprefix $(OBJDIR), $(notdir $(SRC:.c=.o)))
+D_FILES = $(addprefix $(OBJDIR), $(notdir$(SRC:.c=.d)))
 CC ?= gcc -Wall -Werror -Wextra
 DEBUG = -g
-OPTIMIZATION = -O2
-#LIB += -lmlx
+OPTIMIZATION = -O1
 LIB += -lft
-#LIB += -lXext #X11 miscellaneous extensions library
-#LIB += -lX11 #Core X11 protocol client library
-#LIB += -lm #standard C library of basic mathematical functions
-#LIB += -lz #libz - compression/decompression library
 LIBPATH += -L./libraries/libft/
 LIBINC += -I./libraries/libft/
 
 all : $(NAME)
 
-$(NAME): obj $(OBJ)
+# translation of assembly language code into machine code
+# -c, stops after assembly stage
+# -MD lists both system header files and user header files, dependencies
+# -MMD lists only user header files, dependencies
+# $< the first prerequisite (usually a source file) main.c (dependency %.c)
+# $@ is the name of the target being generated main.o (target %.o)
+$(OBJDIR)%.o : $(SRCDIR)%.c push_swap.h obj
+	$(CC) $(DEBUG) $(LIBINC) -c $< -o $@ -MMD
+
+# linking stage
+$(NAME): $(OBJ)
 	make -C ./libraries/libft/
 	$(CC) $(OBJ) $(LIBPATH) $(LIB) $(LIBINC)  -o $(NAME)
 
 obj:
 	mkdir -p $(OBJDIR)
-
-$(OBJ): $(OBJDIR)%.o : %.c push_swap.h
-	$(CC) $(DEBUG) $(OPTIMIZATION) $(LIBINC) -c $< -o $@ -MMD
 
 include $(wildcard $(D_FILES))
 

@@ -10,17 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "ft_lstc.h"
 
-# include "libraries/libft/libft.h"
-# include "ft_lstc.h"
-
-typedef struct s_minmaxmed
+/* ft_lstc_pop
+** Detaches an element from stack
+*/
+void	ft_lstc_pop(t_listc *lst)
 {
-	int	min;
-	int	med;
-	int	max;
-}			t_mmm;
-
-#endif //PUSH_SWAP_H
+	lst->prev->next = lst->next;
+	lst->next->prev = lst->prev;
+	lst->next = lst;
+	lst->prev = lst;
+}

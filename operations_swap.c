@@ -6,21 +6,33 @@
 /*   By: bnidia <bnidia@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 08:42:42 by bnidia            #+#    #+#             */
-/*   Updated: 2022/03/15 06:14:14 by bnidia           ###    ########.fr      */
+/*   Updated: 2022/03/19 18:48:16 by bnidia           ###    ########.fr      */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include <unistd.h>
+#include "push_swap.h"
 
-# include "libraries/libft/libft.h"
-# include "ft_lstc.h"
-
-typedef struct s_minmaxmed
+/* sa
+ * swapping two first values of the stack 'a'
+ * exchanging values by bit operations */
+void	sa(t_listc *a)
 {
-	int	min;
-	int	med;
-	int	max;
-}			t_mmm;
+	a->value ^= a->next->value;
+	a->next->value ^= a->value;
+	a->value ^= a->next->value;
+	if (write(1, "sa\n", 3))
+		return ;
+}
 
-#endif //PUSH_SWAP_H
+/* sb
+ * swapping two first values of the stack 'b'
+ * exchanging values by sum operations */
+void	sb(t_listc *b)
+{
+	b->value = b->value + b->next->value;
+	b->next->value = b->value - b->next->value;
+	b->value = b->value - b->next->value;
+	if (write(1, "sa\n", 3))
+		return ;
+}

@@ -6,21 +6,18 @@
 /*   By: bnidia <bnidia@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 08:42:42 by bnidia            #+#    #+#             */
-/*   Updated: 2022/03/15 06:14:14 by bnidia           ###    ########.fr      */
+/*   Updated: 2022/03/24 15:11:15 by bnidia           ###    ########.fr      */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include <stdlib.h>
 
-# include "libraries/libft/libft.h"
-# include "ft_lstc.h"
-
-typedef struct s_minmaxmed
+void	*ft_malloc(size_t size)
 {
-	int	min;
-	int	med;
-	int	max;
-}			t_mmm;
+	void	*result;
 
-#endif //PUSH_SWAP_H
+	result = malloc(size);
+	if (!result)
+		exit(EXIT_FAILURE);
+	return (result);
+}

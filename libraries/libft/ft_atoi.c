@@ -10,21 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ft_atoi
-** Convert a string to a integer
-** Return Value
-** The converted value. Pointer *nptr not moved and not corrupted
-*/
+#include <stdio.h>
+#include <limits.h>
 
-int	ft_atoi(const char *nptr)
+/* ft_atoi
+** Convert a string to the integer
+** Return Value
+** 0 if value not in range (error). The converted value.
+*/
+int	ft_atoi(const char *num_ptr)
 {
-	int		num;
-	int		sign;
-	char	*num_ptr;
+	ssize_t		num;
+	int			sign;
 
 	num = 0;
 	sign = 1;
-	num_ptr = (char *)nptr;
 	while (*num_ptr == '\t' || *num_ptr == '\n' || *num_ptr == '\v' \
 		|| *num_ptr == '\f' || *num_ptr == '\r' || *num_ptr == ' ')
 		num_ptr++;
@@ -34,5 +34,7 @@ int	ft_atoi(const char *nptr)
 		num_ptr++;
 	while (*num_ptr >= '0' && *num_ptr <= '9')
 		num = num * 10 + *num_ptr++ - '0';
+	if (num * sign > INT_MAX || num * sign < INT_MIN)
+		return (0);
 	return (num * sign);
 }

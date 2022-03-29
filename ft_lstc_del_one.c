@@ -10,17 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include <stdlib.h>
+#include "ft_lstc.h"
 
-# include "libraries/libft/libft.h"
-# include "ft_lstc.h"
-
-typedef struct s_minmaxmed
+/* ft_lstc_del_one
+** Takes as a parameter an element and frees the memory of the element’s
+** content using the function ’del’ given as a parameter and free the
+** element. The memory of ’next’ must not be freed
+*/
+void	ft_lstc_del_one(t_listc **lst)
 {
-	int	min;
-	int	med;
-	int	max;
-}			t_mmm;
-
-#endif //PUSH_SWAP_H
+	if (*lst != (*lst)->prev)
+		ft_lstc_pop(*lst);
+	free(*lst);
+	*lst = NULL;
+}
