@@ -23,7 +23,10 @@ Part_1	= 	ft_isalpha.c	ft_toupper.c	ft_calloc.c\
 			ft_memcpy.c		ft_atoi.c\
 			ft_memmove.c\
 			ft_strlcpy.c\
-			ft_strlcat.c
+			ft_strlcat.c\
+			ft_quick_sort.c\
+			ft_malloc.c
+
 			
 Part_2	=	ft_substr.c		ft_striteri.c\
 			ft_strjoin.c	ft_putchar_fd.c\
@@ -33,11 +36,14 @@ Part_2	=	ft_substr.c		ft_striteri.c\
 			ft_strmapi.c
 
 Bonus	=	ft_lstnew.c			ft_lstdelone.c\
-			ft_lstadd_front.c		ft_lstclear.c\
-			ft_lstsize.c			ft_lstiter.c\
-			ft_lstlast.c			ft_lstmap.c\
-			ft_lstadd_back.c
-			
+			ft_lstadd_front.c	ft_lstclear.c\
+			ft_lstsize.c		ft_lstiter.c\
+			ft_lstlast.c		ft_lstmap.c\
+			ft_lstadd_back.c \
+			ft_lstc_add.c		ft_lstc_del_one.c\
+			ft_lstc_clear.c		ft_lstc_size.c\
+			ft_lstc_new.c		ft_lstc_pop.c
+
 Obj 		= $(patsubst %.c,%.o,$(Part_1) $(Part_2))
 Obj_bonus 	= $(patsubst %.c,%.o,$(Bonus))
 D_file		= $(patsubst %.c,%.d,$(Part_1) $(Part_2))

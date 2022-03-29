@@ -3,10 +3,6 @@
 NAME = push_swap
 
 SRC += main.c
-SRC += ft_lstc_add.c ft_lstc_del_one.c
-SRC += ft_lstc_clear.c ft_lstc_size.c
-SRC += ft_lstc_new.c ft_lstc_pop.c
-SRC += ft_quick_sort.c ft_malloc.c
 SRC += init_stack.c
 SRC += operations_push.c operations_swap.c
 SRC += operations_rotate.c operations_rev_rotate.c
@@ -36,7 +32,7 @@ $(OBJDIR)%.o : $(SRCDIR)%.c push_swap.h obj
 
 # linking stage
 $(NAME): $(OBJ)
-	make -C ./libraries/libft/
+	make bonus -C ./libraries/libft/
 	$(CC) $(OBJ) $(LIBPATH) $(LIB) $(LIBINC)  -o $(NAME)
 
 obj:
