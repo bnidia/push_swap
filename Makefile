@@ -12,14 +12,14 @@ SRCDIR = ./
 OBJDIR = ./obj/
 OBJ = $(addprefix $(OBJDIR), $(notdir $(SRC:.c=.o)))
 D_FILES = $(addprefix $(OBJDIR), $(notdir$(SRC:.c=.d)))
-CC ?= gcc -Wall -Werror -Wextra
+CC = gcc -Wall -Werror -Wextra
 DEBUG = -g
 OPTIMIZATION = -O1
 LIB += -lft
 LIBPATH += -L./libraries/libft/
 LIBINC += -I./libraries/libft/
 
-all : $(NAME)
+all: $(NAME)
 
 # translation of assembly language code into machine code
 # -c, stops after assembly stage
@@ -27,13 +27,13 @@ all : $(NAME)
 # -MMD lists only user header files, dependencies
 # $< the first prerequisite (usually a source file) main.c (dependency %.c)
 # $@ is the name of the target being generated main.o (target %.o)
-$(OBJDIR)%.o : $(SRCDIR)%.c push_swap.h obj
+$(OBJDIR)%.o: $(SRCDIR)%.c push_swap.h
 	$(CC) $(DEBUG) $(LIBINC) -c $< -o $@ -MMD
 
 # linking stage
-$(NAME): $(OBJ)
+$(NAME): obj $(OBJ)
 	make bonus -C ./libraries/libft/
-	$(CC) $(OBJ) $(LIBPATH) $(LIB) $(LIBINC)  -o $(NAME)
+	$(CC) $(OBJ) $(LIBPATH) $(LIB) $(LIBINC) -o $(NAME)
 
 obj:
 	mkdir -p $(OBJDIR)
