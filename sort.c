@@ -1,40 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*                                                      :+:      :+:    :+:   */
+/*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bnidia <bnidia@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: bnidia <bnidia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 08:42:42 by bnidia            #+#    #+#             */
-/*   Updated: 2022/03/20 13:46:34 by bnidia           ###    ########.fr      */
+/*   Updated: 2022/05/21 02:21:20 by bnidia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-extern void	sa(t_listc *a);
-extern void	rra(t_listc **a);
-extern void	ra(t_listc **a);
-extern void	pb(t_listc **a, t_listc **b);
-extern void	pa(t_listc **a, t_listc **b);
-static void	get_index(t_listc **a, t_mmm m);
-
-void	sort_three(t_listc **a)
-{
-	int	z1;
-	int	z2;
-	int	z3;
-
-	z1 = (*a)->value;
-	z2 = (*a)->next->value;
-	z3 = (*a)->next->next->value;
-	if (z1 < z2 && z1 < z3 && z2 > z3)
-		sa(*a);
-	if (z1 > z2 && z1 > z3 && z2 > z3)
-		sa(*a);
-	if (z1 > z2 && z2 < z3)
-		sa(*a);
-}
 
 void	sort_final(t_listc **stack_a, t_mmm	minmaxmed)
 {
@@ -52,38 +28,10 @@ void	sort_final(t_listc **stack_a, t_mmm	minmaxmed)
 	}
 	if (i < size / 2)
 		while ((*stack_a)->value != minmaxmed.min)
-			rra(stack_a);
+			rra(stack_a, true);
 	else
 		while ((*stack_a)->value != minmaxmed.min)
-			ra(stack_a);
-}
-
-void	sort_five(t_listc **a, t_listc **b, t_mmm m)
-{
-	get_index(a, m);
-	*b = NULL;
-	while (ft_lstc_size(*a) != 3)
-	{
-		if ((*a)->value == 1 || (*a)->value == 5)
-		{
-			pb(a, b);
-			continue ;
-		}
-		ra(a);
-	}
-	sort_three(a);
-	if ((*a)->value == 4)
-		ra(a);
-	if ((*a)->value == 3)
-		rra(a);
-	pa(a, b);
-	if ((*a)->value == 5)
-		ra(a);
-	pa(a, b);
-	if ((*a)->value == 5)
-		ra(a);
-	ft_lstc_clear(a);
-	exit(EXIT_SUCCESS);
+			ra(stack_a, true);
 }
 
 void	get_index(t_listc **a, t_mmm m)
@@ -112,4 +60,49 @@ void	get_index(t_listc **a, t_mmm m)
 		(*a)->score_ra = 0;
 		*a = (*a)->next;
 	}
+}
+
+bool	check_if_sorted(t_listc **stack_a)
+{
+	int		size;
+	t_listc	*a;
+
+	a = *stack_a;
+	size = ft_lstc_size(a) - 1;
+	while (size--)
+	{
+		if (a->value > a->next->value)
+			return (false);
+		a = a->next;
+	}
+	ft_lstc_clear(stack_a);
+	return (true);
+}
+
+void	check_if_duplicated(t_listc **a, t_mmm *minmaxmed)
+{
+	int	*nums;
+	int	i;
+
+	nums = (int *)ft_malloc(sizeof(int) * ft_lstc_size(*a));
+	i = 0;
+	while (i < ft_lstc_size(*a))
+	{
+		nums[i++] = (*a)->value;
+		*a = (*a)->next;
+	}
+	ft_quick_sort(nums, 0, ft_lstc_size(*a) - 1);
+	i = 0;
+	while (i++ < ft_lstc_size(*a) - 1)
+	{
+		if (nums[i - 1] == nums[i])
+		{
+			ft_lstc_clear(a);
+			ft_error();
+		}
+	}
+	minmaxmed->min = nums[0];
+	minmaxmed->med = nums[ft_lstc_size(*a) / 2];
+	minmaxmed->max = nums[ft_lstc_size(*a) - 1];
+	free(nums);
 }

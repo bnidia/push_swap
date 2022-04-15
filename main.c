@@ -1,1 +1,113 @@
-/* ************************************************************************** *//*                                                                            *//*                                                        :::      ::::::::   *//*                                                      :+:      :+:    :+:   *//*                                                    +:+ +:+         +:+     *//*   By: bnidia <bnidia@student.21-school.ru>       +#+  +:+       +#+        *//*                                                +#+#+#+#+#+   +#+           *//*   Created: 2021/10/04 08:42:42 by bnidia            #+#    #+#             *//*   Updated: 2022/03/13 08:24:27 by bnidia           ###    ########.fr      *//*                                                                            *//* ************************************************************************** */#include "push_swap.h"#include <stdio.h>extern t_listc	*init_stack(int argc, char *argv[]);static void		check_if_sorted(t_listc **a);static void		check_if_duplicated(t_listc **a, t_mmm *minmaxmed);extern void		ft_quick_sort(int *s_arr, int first, int last);extern void		ft_error(void);static void		leave_three(t_listc **a, t_listc **b, t_mmm minmaxmed);extern void		pb(t_listc **a, t_listc **b);extern void		ra(t_listc **a);extern void		rb(t_listc **b);extern void		sort_three(t_listc **a);extern void		sort_five(t_listc **a, t_listc **b, t_mmm minmaxmed);extern void		score_count(t_listc *stack_a, t_listc *stack_b, int *score);extern void		score_process(t_listc **stack_a, t_listc **stack_b, int score);extern void		sort_final(t_listc **a, t_mmm minmaxmed);extern void		*ft_malloc(size_t size);/* ARG=ruby -e "puts (1..100).to_a.shuffle.join(' ')"; * ./push_swap $ARG | ./checker $ARG * */int	main(int argc, char *argv[]){	t_listc	*a;	t_listc	*b;	t_mmm	minmaxmed;	int		score;	a = init_stack(argc, argv);	minmaxmed = (t_mmm){};	check_if_duplicated(&a, &minmaxmed);	check_if_sorted(&a);	if (ft_lstc_size(a) == 5)		sort_five(&a, &b, minmaxmed);	leave_three(&a, &b, minmaxmed);	sort_three(&a);	while (b)	{		score_count(a, b, &score);		score_process(&a, &b, score);	}	sort_final(&a, minmaxmed);	ft_lstc_clear(&a);	return (0);}static void	check_if_sorted(t_listc **stack_a){	int		size;	t_listc	*a;	a = *stack_a;	size = ft_lstc_size(a) - 1;	while (size--)	{		if (a->value > a->next->value)			return ;		a = a->next;	}	ft_lstc_clear(stack_a);	exit(EXIT_SUCCESS);}static void	check_if_duplicated(t_listc **a, t_mmm *minmaxmed){	int	*nums;	int	i;	nums = (int *)ft_malloc(sizeof(int) * ft_lstc_size(*a));	i = 0;	while (i < ft_lstc_size(*a))	{		nums[i++] = (*a)->value;		*a = (*a)->next;	}	ft_quick_sort(nums, 0, ft_lstc_size(*a) - 1);	i = 0;	while (i++ < ft_lstc_size(*a) - 1)	{		if (nums[i - 1] == nums[i])		{			ft_lstc_clear(a);			ft_error();		}	}	minmaxmed->min = nums[0];	minmaxmed->med = nums[ft_lstc_size(*a) / 2];	minmaxmed->max = nums[ft_lstc_size(*a) - 1];	free(nums);}static void	leave_three(t_listc **a, t_listc **b, t_mmm m){	int	size;	*b = NULL;	size = ft_lstc_size(*a);	if (size <= 3)		return ;	while (size--)	{		if ((*a)->value == m.min || (*a)->value == m.max \			|| (*a)->value == m.med)		{			ra(a);			continue ;		}		if ((*a)->value < m.med)			pb(a, b);		else		{			pb(a, b);			rb(b);		}	}}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bnidia <bnidia@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/04 08:42:42 by bnidia            #+#    #+#             */
+/*   Updated: 2022/03/13 08:24:27 by bnidia           ###    ########.fr      */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
+
+/* ARG=ruby -e "puts (1..100).to_a.shuffle.join(' ')";
+ * ./push_swap $ARG | ./checker $ARG
+ * */
+int	main(int argc, char *argv[])
+{
+	t_listc	*a;
+	t_listc	*b;
+	t_mmm	minmaxmed;
+	int		score;
+
+	a = init_stack(argc, argv);
+	minmaxmed = (t_mmm){};
+	check_if_duplicated(&a, &minmaxmed);
+	if (check_if_sorted(&a))
+		exit(EXIT_SUCCESS);
+	if (ft_lstc_size(a) == 5)
+		sort_five(&a, &b, minmaxmed);
+	leave_three(&a, &b, minmaxmed);
+	sort_three(&a);
+	while (b)
+	{
+		score_count(a, b, &score);
+		score_process(&a, &b, score);
+	}
+	sort_final(&a, minmaxmed);
+	ft_lstc_clear(&a);
+	return (0);
+}
+
+void	leave_three(t_listc **a, t_listc **b, t_mmm m)
+{
+	int	size;
+
+	*b = NULL;
+	size = ft_lstc_size(*a);
+	if (size <= 3)
+		return ;
+	while (size--)
+	{
+		if ((*a)->value == m.min || (*a)->value == m.max \
+			|| (*a)->value == m.med)
+		{
+			ra(a, true);
+			continue ;
+		}
+		if ((*a)->value < m.med)
+			pb(a, b, true);
+		else
+		{
+			pb(a, b, true);
+			rb(b, true);
+		}
+	}
+}
+
+void	sort_three(t_listc **a)
+{
+	int	z1;
+	int	z2;
+	int	z3;
+
+	z1 = (*a)->value;
+	z2 = (*a)->next->value;
+	z3 = (*a)->next->next->value;
+	if (z1 < z2 && z1 < z3 && z2 > z3)
+		sa(*a, true);
+	if (z1 > z2 && z1 > z3 && z2 > z3)
+		sa(*a, true);
+	if (z1 > z2 && z2 < z3)
+		sa(*a, true);
+}
+
+void	sort_five(t_listc **a, t_listc **b, t_mmm m)
+{
+	get_index(a, m);
+	*b = NULL;
+	while (ft_lstc_size(*a) != 3)
+	{
+		if ((*a)->value == 1 || (*a)->value == 5)
+		{
+			pb(a, b, true);
+			continue ;
+		}
+		ra(a, true);
+	}
+	sort_three(a);
+	if ((*a)->value == 4)
+		ra(a, true);
+	if ((*a)->value == 3)
+		rra(a, true);
+	pa(a, b, true);
+	if ((*a)->value == 5)
+		ra(a, true);
+	pa(a, b, true);
+	if ((*a)->value == 5)
+		ra(a, true);
+	ft_lstc_clear(a);
+	exit(EXIT_SUCCESS);
+}
